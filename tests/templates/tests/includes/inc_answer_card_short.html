@@ -1,0 +1,14 @@
+{% load my_tags %}
+<div class="col-12">
+    <div class="card shadow-sm  {% if answer.is_correct %} bg-success {% else %} bg-danger {% endif %}">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center">
+                <h3 class="mr-auto">{{ answer.text }}</h3>
+
+                <div class="btn-group">
+                    <a href="{% url 'tests:answers_delete' pk=answer.pk question_pk=object.pk %}" class="btn btn-sm btn-outline-primary">Delete</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

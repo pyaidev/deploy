@@ -1,0 +1,55 @@
+{% load my_tags %}
+<div class="col px-3">
+    <div class="card shadow-sm">
+        {% if request.path|slice:"0:21" == '/material_photos_list/' %}
+            <div class="card-header text-center">
+                <h3>{{ material_photo.material }}</h3>
+            </div>
+        {% endif %}
+
+
+        <div class="bd-placeholder-img card-img-top" style="height: 350px; border-radius: 5px 5px 0 0;">
+            {% if material_photo.p3din_model %}
+                <iframe id="card_figure_{{ material_photo.pk }}" allowfullscreen width="100%" height="100%"
+                        loading="lazy"
+                        frameborder="0"
+                        src="{{ material_photo.p3din_model.link_for_iframe }}+spin+bg-212529ff+dl,share,link,border-hidden"
+                        style="width: 100%; height: 100%; object-fit: cover;
+                            border-radius: 5px 5px 0 0;"></iframe>
+            {% elif material_photo.thin_section %}
+                <img src="{{ material_photo.thin_section.preview|mediapath_filter }}" alt=""
+                     style="width: 100%; height: 100%; object-fit: cover; border-radius: 5px 5px 0 0;">
+            {% elif material_photo.pano_view %}
+                <img src="{{ material_photo.pano_view.preview|mediapath_filter }}" alt=""
+                     style="width: 100%; height: 100%; object-fit: cover; border-radius: 5px 5px 0 0;">
+            {% elif material_photo.map %}
+                <img src="/media/asserts/Google-Maps.gif" alt="No image"
+                     style="width: 100%; height: 100%; object-fit: cover; border-radius: 5px 5px 0 0;">
+            {% else %}
+                <img src="" alt="Bulk figure"
+                     style="width: 100%; height: 100%; object-fit: cover; border-radius: 5px 5px 0 0;">
+            {% endif %}
+        </div>
+
+
+        <div class="card-footer p-1">
+            <div class="d-flex justify-content-between align-items-center">
+
+                <p class="card-text d-none d-md-block pb-4 mb-1"
+                   style="height: 18px; overflow: hidden;">
+                    {figure-{{ material_photo.pk }}}. {{ material_photo.signature }}</p>
+                <p class="card-text d-md-none pb-4 mb-1">
+                    {figure-{{ material_photo.pk }}}. {{ material_photo.signature }}</p>
+                <div class="btn-group">
+                    <a href="
+
+
+                            {% if material_photo.p3din_model %}{% url 'unique_content:model_3d_view' pk=material_photo.p3din_model.pk %}{% elif material_photo.thin_section %}{% url 'unique_content:thin_section_view' pk=material_photo.thin_section.pk %}{% elif material_photo.pano_view %}{% url 'unique_content:360view_view' pk=material_photo.pano_view.pk %}{% else %}#{% endif %}"
+                       class="btn btn-sm btn-outline-primary">View</a>
+                    <a href="{% url 'education_content:materialphotos_delete' pk=material_photo.pk %}"
+                       class="btn btn-sm btn-outline-danger">Delete</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

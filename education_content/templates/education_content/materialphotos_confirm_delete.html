@@ -1,0 +1,18 @@
+{% extends 'education_content/base.html' %}
+
+{% block content %}
+    <main>
+        <div class="position-relative overflow-hidden p-3 p-md-5 m-md-5 text-center bg-body-tertiary">
+            <div class="d-md-flex flex-md-equal container my-md-3 ps-md-3">
+                <form method="post" enctype="multipart/form-data">
+                    <img class="mb-4" id="themeImage" src="/media/asserts/favicon.ico" alt="" width="128" height="128">
+                    <h1 class="h3 mb-3 fw-normal">Do you want to delete figure "{{ object }}"?</h1>
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Confirm</button>
+                    <a href="{% url 'education_content:materialphotos_list' %}"
+                                   class="btn btn-primary">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </main>
+{% endblock %}

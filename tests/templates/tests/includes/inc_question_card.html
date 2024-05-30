@@ -1,0 +1,39 @@
+{% load my_tags %}
+<div class="col-12 mt-1">
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h3>{{ question.text }}</h3>
+            {% if question.type.title == 'checkbox' %}
+                <ul class="list-group">
+                    {% for answer in answers|get_item:question.pk %}
+                        <li class="list-group-item">
+                            <input class="form-check-input me-1" type="checkbox" name="Question:{{ question.pk }}" value="{{ answer }}"
+                                   id="{{ question }}_{{ answer }}_CheckboxStretched">
+                            <label class="form-check-label stretched-link"
+                                   for="{{ question }}_{{ answer }}_CheckboxStretched">{{ answer }}</label>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% elif question.type.title == 'radio' %}
+                <ul class="list-group">
+                    {% for answer in answers|get_item:question.pk %}
+                        <li class="list-group-item">
+                            <input class="form-check-input me-1" type="radio" name="Question:{{ question.pk }}" value="{{ answer }}"
+                                   id="{{ question }}_{{ answer }}_Radio"
+                                   checked>
+                            <label class="form-check-label" for="{{ question }}_{{ answer }}_Radio">{{ answer }}</label>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <div class="form-floating">
+                        <textarea type="text" name="Question:{{ question.pk }}" autofocus autocapitalize="none"
+                                  autocomplete="current-text" class="form-control"
+                                  id="{{ question }}_{{ answer }}_text"
+                                  rows="3" placeholder=" "></textarea>
+                    <label for="{{ question }}_{{ answer }}_text">Text area</label>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>

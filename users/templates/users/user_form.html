@@ -1,0 +1,62 @@
+{% extends 'education_content/base.html' %}
+
+{% block content %}
+    <main class="form-signin w-100 m-auto">
+        <div class="position-relative overflow-hidden p-3 p-md-5 m-md-5 text-center bg-body-tertiary">
+            <div class="d-md-flex flex-md-equal container my-md-3 ps-md-3">
+                <form method="post" enctype="multipart/form-data">
+
+                    <img class="mb-4" id="themeImage" src="/media/asserts/favicon.ico" alt="" width="128" height="128">
+                    <h1 class="h3 mb-3 fw-normal">Моя учетная запись</h1>
+                    {% csrf_token %}
+                    <div class="form-floating mb-1">
+                        <input type="email" name="email" value="{{ object.email }}" autofocus autocapitalize="none"
+                               autocomplete="current-email"
+                               maxlength="254" class="form-control" id="id_email" placeholder="name@example.com">
+                        <label for="id_email">Электронная почта</label>
+                    </div>
+                    <div class="form-floating mb-1">
+                        <input type="password" name="password1" autocomplete="current-password"
+                               class="form-control"
+                               id="id_password1" placeholder="Password">
+                        <label for="id_password1">Новый пароль</label>
+                    </div>
+                    <div class="form-floating mb-1">
+                        <input type="password" name="password2" autocomplete="current-password"
+                               class="form-control"
+                               id="id_password2" placeholder="Password">
+                        <label for="id_password2">Повторите пароль</label>
+                    </div>
+                    <div class="form-floating mb-1">
+                        <input type="text" name="name" {% if object.name %}value="{{ object.name }}"{% endif %} autofocus
+                               autocapitalize="none"
+                               autocomplete="username"
+                               maxlength="100" class="form-control" id="id_name" placeholder="name@example.com">
+                        <label for="id_name">Имя</label>
+                    </div>
+                    <div class="form-floating mb-1">
+                        <input type="text" name="surname" {% if object.surname %}value="{{ object.surname }}"{% endif %}
+                               autofocus
+                               autocapitalize="none"
+                               autocomplete="username"
+                               maxlength="150" class="form-control" id="id_surname" placeholder="name@example.com">
+                        <label for="id_surname">Фамилия</label>
+
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" name="phone" {% if object.phone %}value="{{ object.phone }}"{% endif %}
+                               autofocus autocapitalize="none"
+                               autocomplete="username"
+                               maxlength="35" class="form-control" id="id_phone" placeholder="name@example.com">
+                        <label for="id_phone">Номер телефона</label>
+                    </div>
+                    {% if form.errors %}
+                        {{ form.errors }}
+                    {% endif %}
+                    <button class="btn btn-primary" type="submit">Сохранить</button>
+                    <a href="{% url 'users:generate_new_password' %}" class="btn btn-danger">Сгенерировать случайный пароль</a>
+                </form>
+            </div>
+        </div>
+    </main>
+{% endblock %}

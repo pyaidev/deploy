@@ -1,0 +1,120 @@
+{% extends 'education_content/base.html' %}
+
+{% block content %}
+    {% load my_tags %}
+    <main class="form-signin w-100 m-auto">
+
+        <section class="py-3 text-center container">
+            <div class="row py-lg-5">
+                <div class="col-lg-12 col-md-8 mx-auto">
+                    <h1 class="fw-light">{{ object }}</h1>
+                    <p class="lead text-body-secondary">{{ object.description }}</p>
+                </div>
+            </div>
+        </section>
+        <div class="position-relative overflow-hidden p-1 p-md-5 m-md-5 text-center bg-body-tertiary">
+            <div class="album py-5 bg-body-tertiary">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-12 col-md-6">
+                            <div id="videoPlayerBlock_1" style="position: relative">
+                                <video class="w-100" id="videoPlayer" preload="auto" type="video/mp4">
+                                    Ваш браузер не поддерживает видео.
+                                </video>
+                                {% if labels_list %}
+                                    {% for label in labels_list %}
+                                        <div class="label-container"
+                                             style="position: absolute;left: {{ label.coord_X }}%; top: {{ label.coord_Y }}%; z-index: 2;  display: none;">
+                                            <h5 class="text-danger font-weight-bold m-0"
+                                                style="user-select: none;">{{ label.mineral.abbreviation }}</h5>
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6 align-items-center">
+                            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <div class="container w-75 my-md-5 my-0 p-0">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <img id="polarizerImg" src="/media/asserts/Polarizer_w.png" width="100%"
+                                                 height="auto" alt=""
+                                                 style="user-select: none; user-drag: none; -moz-user-select: none; -webkit-user-drag: none; -webkit-user-select: none; -ms-user-select: none;">
+                                            <h6 class="mt-2 d-none d-lg-block" style="user-select: none;">Nicols
+                                                rotation angle:</h6>
+                                            <div class="progress w-100 my-1" id="frameNumber_1_set" role="progressbar"
+                                                 aria-label="Basic progressbar"
+                                                 aria-valuenow="0" aria-valuemin="0" aria-valuemax="359"
+                                                 style="height: 20px; z-index: 3;">
+                                                <div class="progress-bar bg-success" id="frameNumber_1"
+                                                     style="user-select: none;">
+                                                    0
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <img id="stageImg" src="/media/asserts/Stage_w.png" width="100%" height="auto"
+                                                 alt=""
+                                                 style="user-select: none; user-drag: none; -moz-user-select: none; -webkit-user-drag: none; -webkit-user-select: none; -ms-user-select: none;">
+                                            <h6 class="mt-2 d-none d-lg-block" style="user-select: none;">Stage rotation
+                                                angle:</h6>
+                                            <div class="progress w-100 my-1" id="angleNumber_1_set" role="progressbar"
+                                                 aria-label="Basic progressbar"
+                                                 aria-valuenow="0" aria-valuemin="0" aria-valuemax="359"
+                                                 style="height: 20px; z-index: 3;">
+                                                <div class="progress-bar bg-primary" id="angleNumber_1"
+                                                     style="user-select: none;">
+                                                    0
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <button type="button" class="btn btn-info w-75 m-1" id="modeButton_1"
+                                        style="z-index: 3;"
+                                        onclick="toggleMode()">Switch to XPL mode
+                                </button>
+                                <button type="button" class="btn btn-warning w-75 m-1" id="mineralsButton_1"
+                                        style="z-index: 3;"
+                                        onclick="toggleMinerals()">Turn mineral labels on
+                                </button>
+                                <button type="button" class="btn btn-danger w-75 m-1" id="autoRotateButton_1"
+                                        style="z-index: 3;"
+                                        onclick="toggleAutoRotate()">Turn auto-rotate mode on
+                                </button>
+                                <button type="button" class="btn btn-secondary w-75 m-1 mb-3 mb-md-5"
+                                        id="rotateButton_1"
+                                        style="z-index: 3;"
+                                        onclick="toggleRotation()">Switch to stage rotation
+                                </button>
+                                <h3 class="w-75">Virtual microscope control:</h3>
+                                <p class="w-75 d-none d-lg-block">
+                                    To interact with the control elements, you need to press and hold the left mouse
+                                    button on the corresponding element and move the mouse around centre of element
+                                </p>
+                                <p class="w-75 d-lg-none">
+                                    To interact with the control elements, you need to press and hold the left mouse
+                                    button on the corresponding element and move the mouse horizontally
+                                </p>
+
+                                <p class="w-75"><a href="https://geotest.tech/material_view/33/">Here</a> you can see
+                                    the transcript of the mineral signature labels
+                                </p>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+    <script defer>
+
+        const filePPL = "{{ object.file_ppl | mediapath_filter }}";
+        const fileCPL = "{{ object.file_cpl | mediapath_filter }}";
+
+    </script>
+    <script type="text/javascript" src="/static/js/thin_section_widget/thin_section_widget.js" defer></script>
+{% endblock %}

@@ -1,0 +1,31 @@
+{% load my_tags %}
+<div class="col px-3">
+    <div class="card shadow-sm">
+
+        <div class="bd-placeholder-img card-img-top" style="height: 350px; border-radius: 5px 5px 0 0;">
+
+            <iframe id="card_figure_3dmodel_{{ object.pk }}" allowfullscreen width="100%" height="100%" loading="lazy"
+                    frameborder="0"
+                    src="{{ object.link_for_iframe }}+spin+bg-212529ff+dl,share,link,border-hidden"
+                    style="width: 100%; height: 100%; object-fit: cover;
+                            border-radius: 5px 5px 0 0;"></iframe>
+
+        </div>
+
+
+        <div class="card-footer p-1">
+            <div class="d-flex justify-content-between align-items-center">
+
+                <p class="card-text d-none d-md-block pb-4 mb-1"
+                   style="height: 18px; overflow: hidden;">
+                    {{ object.title }}</p>
+                <p class="card-text d-md-none mx-1 py-1 my-0">
+                    {{ object.title }}</p>
+                <div class="btn-group">
+                    <a href="{% url 'unique_content:model_3d_view' pk=object.pk %}"
+                       class="btn btn-sm btn-outline-primary">View</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

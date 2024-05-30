@@ -1,0 +1,48 @@
+{% load my_tags %}
+<div class="col px-3" style="{% if not material.is_published %} opacity: 0.3 {% endif %};">
+    <div class="card shadow-sm{% if material.is_published_requested and user.is_staff %} bg-primary{% endif %}">
+
+        <div class="card-header text-center">
+            <h3 class="card-text d-none d-md-block" style="height: 35px; overflow: hidden;">
+                {% if request.path|slice:"0:15" == '/material_list/' %}{{ material.chapter }}
+                    :{% endif %} {{ material }}</h3>
+            <h3 class="card-text d-md-none">
+                {% if request.path|slice:"0:15" == '/material_list/' %}{{ material.chapter }}
+                    :{% endif %} {{ material }}</h3>
+        </div>
+
+        {% if material.preview %}
+            <a href="{% url 'education_content:material_view' pk=material.pk %}">
+                <div class="bd-placeholder-img card-img-top" style="height: 225px; border-radius: 5px 5px 0 0;">
+                    <img src="{{ material.preview|mediapath_filter }}" alt=""
+                         style="width: 100%; height: 100%; object-fit: cover; border-radius: 5px 5px 0 0;">
+                </div>
+            </a>
+        {% else %}
+            <svg class="bd-placeholder-img card-img-top" width="100%" height="225"
+                 xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail"
+                 preserveAspectRatio="none" focusable="false"><title>{{ material }}</title>
+                <rect width="100%" height="100%" fill="#55595c"></rect>
+                <text x="50%" y="50%" fill="#eceeef" dy=".3em">Нет изображения</text>
+            </svg>
+        {% endif %}
+        <div class="card-body">
+            <p class="card-text d-none d-md-block"
+               style="height: 50px; overflow: hidden;">{{ material.description }}.</p>
+            <p class="card-text d-md-none">{{ material.description }}.</p>
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                    <a href="{% url 'education_content:material_view' pk=material.pk %}"
+                       class="btn btn-sm btn-outline-secondary">Посмотреть</a>
+                    {% if not material.is_published %}
+                        {% if material.owner == user or user.is_staff %}
+                            <a href="{% url 'education_content:material_edit' pk=material.pk %}"
+                               class="btn btn-sm btn-outline-secondary">Редактировать</a>
+                        {% endif %}
+                    {% endif %}
+                </div>
+                <small class="text-body-secondary">{{ material.owner }}</small>
+            </div>
+        </div>
+    </div>
+</div>

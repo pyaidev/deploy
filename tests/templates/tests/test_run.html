@@ -1,0 +1,50 @@
+{% extends 'education_content/base.html' %}
+
+{% block content %}
+
+    <main class="form-signin w-100 m-auto">
+        <div class="row">
+
+            <div class="position-relative overflow-hidden p-3 p-md-5 m-md-5 bg-body-tertiary">
+                <div class="d-md-flex flex-md-equal container my-md-3 ps-md-3">
+
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <h1 class="text-center fw-light">{{ test }}</h1>
+                        <p class="text-center lead text-body-secondary">{{ test.description }}</p>
+                        {% if question_list %}
+                            <div class="album py-5 bg-body-tertiary">
+                                <div class="container-fluid">
+                                    <div class="row g-3">
+                                        {% for question in question_list %}
+                                            {% include 'tests/includes/inc_question_card.html' %}
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                        {% if correct_answers %}
+                            <div class="album py-1 bg-body-tertiary">
+                                <div class="container-fluid">
+                                    <div class="row g-3">
+                                        {% for key, value in correct_answers.items %}
+                                            <p>Ваш ответ на {{ key|add:-1 }} вопрос был <span style="{% if value %}color: green;{% else %}color: red;{% endif %}">{% if value %}правильным{% else %}неправильным{% endif %}</span>.</p>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-success">
+                                Готово
+                            </button>
+                        </div>
+                    </form>
+
+
+                </div>
+
+            </div>
+        </div>
+    </main>
+{% endblock %}

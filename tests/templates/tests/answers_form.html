@@ -1,0 +1,51 @@
+{% extends 'education_content/base.html' %}
+
+{% block content %}
+
+    <main class="form-signin w-100 m-auto">
+
+        <div class="position-relative overflow-hidden p-3 p-md-5 m-md-5 text-center bg-body-tertiary">
+            <div class="d-md-flex flex-md-equal container my-md-3 ps-md-3">
+
+                <form method="post" enctype="multipart/form-data">
+                    <img class="mb-4" id="themeImage" src="/media/asserts/favicon.ico" alt="" width="128"
+                         height="128">
+                    <h1 class="h3 mb-3 fw-normal">Creating new answer</h1>
+                    {% csrf_token %}
+                    <div class="form-floating mb-1">
+                        <input type="text" name="text" value="{{ object }}" autofocus autocapitalize="none"
+                               autocomplete="current-text"
+                               maxlength="100" class="form-control" id="id_text"
+                               placeholder="name@example.com">
+                        <label for="id_text">Answer</label>
+                    </div>
+
+                    <input type="hidden" name="question" value="{{ question_pk }}">
+
+                    <div class="form-check text-start my-3">
+                        <input class="form-check-input" name="is_correct" type="checkbox" value="True"
+                               id="flexCheckDefault">
+                        <label class="form-check-label" for="flexCheckDefault">
+                            is_correct
+                        </label>
+                    </div>
+
+                    {% if form.errors %}
+                        {{ form.errors }}
+                    {% endif %}
+
+                    <button type="submit" class="btn btn-success">
+                        {% if object %}
+                            Save
+                        {% else %}
+                            Create
+                        {% endif %}
+                    </button>
+                </form>
+
+
+            </div>
+
+        </div>
+    </main>
+{% endblock %}

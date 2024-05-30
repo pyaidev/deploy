@@ -1,0 +1,186 @@
+{% extends 'education_content/base.html' %}
+
+{% block content %}
+    {% load my_tags %}
+    <style>
+        .pano-image {
+            width: 100%;
+            height: 80vh;
+        }
+
+        .desc-container_class {
+            max-width: 500px;
+            max-height: 500px;
+            min-width: 200px;
+            min-height: 250px;
+            background: #2b3035ff;
+            color: #ffffff;
+            border-radius: 10px;
+            overflow: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .youtube_iframe {
+            width: 100%;
+            height: 100%;
+        }
+        #map {
+            height: 500px; /* The height is 400 pixels */
+            width: 100%; /* The width is the width of the web page */
+        }
+
+        .preview_image {
+            border: none;
+            width: 500px;
+            max-height: 250px;
+            object-fit: cover;
+        }
+
+        .title {
+            font-size: 1.5em;
+            text-align: center;
+            padding: 5px;
+        }
+
+        .text {
+            padding: 0 15px 15px 15px;
+            text-align: justify;
+        }
+
+        .md_image-container_for_window {
+            position: relative;
+            display: inline-block;
+            width: 500px;
+            height: 250px;
+        }
+
+        .md_overlay-text_left {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-100%, -60%);
+            opacity: 0;
+            transition: opacity 0.5s;
+            pointer-events: none; /* Чтобы overlay-text не мешал кликам на изображение */
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .md_overlay-text_right {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(0%, -60%);
+            opacity: 0;
+            transition: opacity 0.5s;
+            pointer-events: none; /* Чтобы overlay-text не мешал кликам на изображение */
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .md_image-container_for_window:hover .md_overlay-text_left {
+            opacity: 0.95;
+        }
+
+        .md_image-container_for_window:hover .md_overlay-text_right {
+            opacity: 0.95;
+        }
+
+        .wrapper {
+            position: relative;
+            width: 100%;
+            height: 250px;
+            overflow: hidden;
+        }
+
+        .figure_3d_iframe_class {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    </style>
+    <main class="form-signin w-100 m-auto">
+        <section class="py-3 text-center container">
+            <div class="row py-lg-5">
+                <div class="col-lg-12 col-md-8 mx-auto">
+                    <h1 class="fw-light">{{ object }}</h1>
+                    <p class="lead text-body-secondary">{{ object.description }}</p>
+                </div>
+            </div>
+        </section>
+        <div class="overflow-hidden p-0 pt-5 p-md-5 pb-md-2 m-md-5 text-center bg-body-tertiary">
+            <div class="album py-0 bg-body-tertiary">
+                <h5 style="text-align: left">360 view:</h5>
+                <div class="d-flex justify-content-between align-items-center w-100">
+                    <i>Created by: {% if object.autor %}{{ object.autor }}{% else %}unknown{% endif %}</i>
+                    <i>Taken time: {% if object.image_creation_date %}{{ object.image_creation_date }}{% else %}
+                        unknown{% endif %}</i>
+                    <i>Height above sea level:
+                        {% if object.height %}{{ object.height|floatformat:"0" }}m{% else %}unknown{% endif %}</i>
+                </div>
+                <div class="position-relative pano-image">
+
+                </div>
+                <h5 style="text-align: left">Location of the 360 viewpoint:</h5>
+                <div id="map"></div>
+                <script
+                        src="https://maps.googleapis.com/maps/api/js?key={{ GOOGLE_MAPS_KEY }}&callback=initMap&v=weekly"
+                        defer
+                ></script>
+                <script src="https://unpkg.com/@googlemaps/markerclusterer/dist/index.min.js"></script>
+            </div>
+        </div>
+
+        <div id="desc-container" class="desc-container_class" style="display:none">
+
+            <div class="wrapper">
+                <iframe id="figure_3d_iframe" class="figure_3d_iframe_class" width="100%" height="100%" allowfullscreen
+                        loading="lazy"
+                        frameborder="0"
+                        src=""></iframe>
+            </div>
+
+            <div id="figures_thin_section_window" class="md_image-container_for_window">
+                <a class="md_image-container_href" href="">
+                    <img id="figures_thin_section_window_img" src="" class="md_image"
+                         style="width: 500px; height: 250px; object-fit: cover;" alt="">
+                    <div class="md_overlay-text_left d-none d-md-block">
+                        <img class="mb-0" src="/media/asserts/favicon.ico" alt="" width="128" height="128">
+                        <h6 class="text-white">CLICK TO OPEN IN VIRTUAL MICROSCOPE MODE</h6>
+                    </div>
+                    <div class="md_overlay-text_right d-none d-md-block">
+                        <img class="mb-0" src="/media/asserts/favicon.ico" alt="" width="128" height="128">
+                        <h6 class="text-white">CLICK TO OPEN IN VIRTUAL MICROSCOPE MODE</h6>
+                    </div>
+
+                </a>
+            </div>
+            <img class="preview_image" src="" alt="">
+            <iframe class="youtube_iframe" src="" title="" allow="autoplay; encrypted-media" allowfullscreen
+                    style="width: 500px; height: 281px;"></iframe>
+            <div class="title"></div>
+            <div class="text"></div>
+        </div>
+
+        <script src="/static/js/360view/three.min.js"></script>
+        <script src="/static/js/360view/panolens.min.js"></script>
+        <script>
+
+            const imgId = '{{ object.pk }}';
+            const infoPointLatitude = '{{ object.latitude }}';
+            const infoPointTitle = '{{ object.title }}';
+            const infoPointPanoType = '{{ object.pano_type }}';
+            const infoPointLongitude = '{{ object.longitude }}';
+            const imgPath = '{{ object.view | mediapath_filter }}';
+            const panoramaDict = null;
+            const panoramaList = [];
+            const infoSpotDict = JSON.parse('{{ info_spot_dict | escapejs }}');
+            const infoSpotCoordList = JSON.parse('{{ info_spot_coordinates_list | escapejs }}');
+            const linkSpotCoordList = null;
+        </script>
+        <script src="/static/js/pano_view_widget/pano_view_widget.js"></script>
+    </main>
+{% endblock %}

@@ -1,0 +1,16 @@
+{% load my_tags %}
+<div class="col-12">
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center">
+                <h3 class="mr-auto">{{ question.text }}</h3>
+
+                <div class="btn-group">
+                    <a href="{% url 'tests:question_view' pk=question.pk %}" class="btn btn-sm btn-outline-secondary">View</a>
+                    <a href="{% url 'tests:question_edit' pk=question.pk %}" class="btn btn-sm btn-outline-secondary">Edit</a>
+                    <a href="{% url 'tests:question_delete' pk=question.pk test_pk=object.pk %}" class="btn btn-sm btn-outline-danger">Delete</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

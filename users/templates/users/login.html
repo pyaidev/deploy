@@ -1,0 +1,42 @@
+{% extends 'education_content/base.html' %}
+
+{% block content %}
+    <main class="form-signin w-100 m-auto">
+        <div class="position-relative overflow-hidden p-3 p-md-5 m-md-5 text-center bg-body-tertiary">
+            <div class="d-md-flex flex-md-equal container my-md-3 ps-md-3">
+                <form method="post" enctype="multipart/form-data">
+
+                    <img class="mb-4" id="themeImage" src="/media/asserts/favicon.ico" alt="" width="128" height="128">
+                    <h1 class="h3 mb-3 fw-normal">Войдите</h1>
+                    {% csrf_token %}
+                    <div class="form-floating mb-1">
+                        <input type="text" name="username" autofocus autocapitalize="none" autocomplete="username"
+                               maxlength="254" class="form-control" id="id_username" placeholder="name@example.com">
+                        <label for="id_username">Электронная почта</label>
+                    </div>
+                    <div class="form-floating">
+                        <input type="password" name="password" autocomplete="current-password" class="form-control"
+                               id="id_password" placeholder="Password">
+                        <label for="id_password">Пароль</label>
+                    </div>
+
+                    <div class="form-check text-start my-3">
+                        <input class="form-check-input" type="checkbox" name="remember_me" value="remember-me"
+                               id="flexCheckDefault" checked>
+                        <label class="form-check-label" for="flexCheckDefault">
+                            Запомнить
+                        </label>
+                    </div>
+                    {% if form.errors %}
+                        {{ form.errors }}
+                    {% endif %}
+                    <button class="btn btn-primary w-100 py-2 my-1" type="submit">Вход</button>
+
+                    <h1 class="h3 mt-md-5 fw-normal">Или вы можете</h1>
+                    <a href="{% url 'users:register' %}" class="btn btn-secondary w-100 py-2 my-1">Зарегистрироваться</a>
+
+                </form>
+            </div>
+        </div>
+    </main>
+{% endblock %}

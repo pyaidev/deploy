@@ -1,0 +1,103 @@
+{% extends 'education_content/base.html' %}
+
+{% block content %}
+    <main class="form-signin w-100 m-auto">
+        <div class="position-relative overflow-hidden p-3 p-md-5 m-md-5 bg-body-tertiary">
+            <div class="d-md-flex flex-md-equal container text-center my-md-3 ps-md-3">
+                <form class="needs-validation" method="post" enctype="multipart/form-data" novalidate>
+                    <img class="mb-4" id="themeImage" src="/media/asserts/favicon.ico" alt="" width="128"
+                         height="128">
+                    <h1 class="h3 mb-3 fw-normal">{% if object %}Editing "{{ object }}" material{% else %}Создание новой лекции{% endif %}</h1>
+                    {% csrf_token %}
+                    <div class="form-floating mb-1">
+                        <input type="text" name="topic" value="{{ object }}" autofocus autocapitalize="none"
+                               autocomplete="current-topic"
+                               maxlength="100" class="form-control" id="id_topic"
+                               placeholder="name@example.com"
+                               required>
+                        <label for="id_topic">Название</label>
+                    </div>
+                    <div class="form-floating mb-1">
+                        <input type="text" name="description" value="{{ object.description }}" autofocus
+                               autocapitalize="none"
+                               autocomplete="current-description"
+                               maxlength="300" class="form-control" id="id_description"
+                               placeholder="name@example.com"
+                               required>
+                        <label for="id_description">Описание</label>
+                    </div>
+
+                    
+                            <select class="form-select form-select-lg mb-1" name="chapter"
+                                    aria-label="Large select example" required>
+                                <option selected>Chapter: {{ object.chapter }}</option>
+                                {% for chapter in chapter_list %}
+                                    <option value="{{ chapter.pk }}">{{ chapter }}</option>
+                                {% endfor %}
+                            </select>
+                    
+
+                    <div class="mb-1">
+                        <input type="file" name="preview" accept="image/*"
+                               class="form-control" id="id_preview">
+                    </div>
+                    {{ form.media }}
+                    {{ form.text }}
+                    {% if form.errors %}
+                        {{ form.errors }}
+                    {% endif %}
+                    <button type="submit" class="btn btn-success mt-3">
+                        {% if object %}
+                            Сохранить
+                        {% else %}
+                        Сохранить
+                        {% endif %}
+                    </button>
+
+                </form>
+            </div>
+
+            {% if object %}
+                <div class="album py-5 bg-body-tertiary">
+                    <div class="container-fluid">
+                        <h2 class="mx-3">Applications:</h2>
+                        <p class="mx-3">Here you can find non-standard applications related to the "{{ object }}" material
+                            (3D models and digital models of petrographic thin sections). After adding each
+                            application, it can be published within the material by placing a special link to it in the
+                            desired location within the text. Links for each application are provided in its card and
+                            take the form of "{figure-[application ID]}"
+                        </p>
+                        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+                            {% if material_photos_list %}
+                                {% for material_photo in material_photos_list %}
+                                    {% include 'education_content/includes/inc_material_photo_card.html' %}
+                                {% endfor %}
+                            {% endif %}
+                            {% if object.owner == user or user.is_staff %}
+                                <div class="col px-3">
+                                    <div class="card shadow-sm">
+                                        <a href="{% url 'education_content:materialphotos_create_for_special_material' material_pk=object.pk %}"
+                                           class="clickable-element">
+                                            <svg class="bd-placeholder-img card-img-top" width="100%" height="390"
+                                                 xmlns="http://www.w3.org/2000/svg" role="img"
+                                                 aria-label="Placeholder: Thumbnail"
+                                                 preserveAspectRatio="none" focusable="false">
+                                                <rect width="100%" height="100%" fill="none" stroke="#55595c"
+                                                      stroke-width="5"></rect>
+                                                <text x="50%" y="50%" fill="#55595c" dy=".3em" text-anchor="middle">
+                                                    Press to
+                                                    add
+                                                    new application
+                                                </text>
+                                            </svg>
+                                        </a>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </main>
+{% endblock %}

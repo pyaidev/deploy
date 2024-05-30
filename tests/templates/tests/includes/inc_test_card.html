@@ -1,0 +1,34 @@
+{% load my_tags %}
+<div class="col px-3" style="{% if not object.is_published %} opacity: 0.3 {% endif %};">
+    <div class="card shadow-sm{% if object.is_published_requested and user.is_staff %} bg-primary{% endif %}">
+        {% if request.path|slice:"0:7" == '/tests/' %}
+            <div class="card-header text-center">
+                <h3>{{ object.material }}: {{ object }}</h3>
+            </div>
+        {% endif %}
+        {% if object.preview %}
+            <div class="bd-placeholder-img card-img-top" style="height: 225px; border-radius: 5px 5px 0 0;">
+                <img src="{{ object.preview|mediapath_filter }}" alt=""
+                     style="width: 100%; height: 100%; object-fit: cover; border-radius: 5px 5px 0 0;">
+            </div>
+        {% else %}
+            <svg class="bd-placeholder-img card-img-top" width="100%" height="225"
+                 xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail"
+                 preserveAspectRatio="none" focusable="false"><title>{{ object }}</title>
+                <rect width="100%" height="100%" fill="#55595c"></rect>
+                <text x="50%" y="50%" fill="#eceeef" dy=".3em">No preview</text>
+            </svg>
+        {% endif %}
+        <div class="card-body">
+            <p class="card-text d-none d-md-block"
+               style="height: 20px; overflow: hidden;">{{ object.description }}.</p>
+            <p class="card-text d-md-none">{{ object.description }}.</p>
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                    <a href="{% url 'tests:test_run' test_pk=object.pk %}" class="btn btn-sm btn-outline-secondary">Пройти</a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

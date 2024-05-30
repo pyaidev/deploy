@@ -1,0 +1,26 @@
+{% extends 'education_content/base.html' %}
+
+{% block content %}
+    <main>
+
+        <section class="py-3 text-center container">
+            <div class="row py-lg-5">
+                <div class="col-lg-12 col-md-8 mx-auto">
+                    <h1 class="fw-light">360 views</h1>
+                    <p class="lead text-body-secondary">Here you can view all available 360 views</p>
+                </div>
+            </div>
+        </section>
+
+        <div class="album py-5 bg-body-tertiary">
+            <div class="container-fluid">
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+                    {% for object in object_list %}
+                        {% include 'unique_content/includes/inc_360view_card.html' %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+    </main>
+{% endblock %}

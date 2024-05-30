@@ -1,0 +1,48 @@
+{% extends 'education_content/base.html' %}
+
+{% block content %}
+
+    <main>
+        <div class="container-fluid">
+            <div class="row text-center">
+                <div class="col">
+                    <div class="position-relative overflow-hidden p-3 p-md-5 mb-3 text-center bg-body-tertiary" style="border-radius: 0 0 21px 21px;">
+                        <div class="col-md-6 mx-auto my-5">
+                            <img class="mb-1" id="themeImage" src="/media/asserts/favicon.ico" alt="" width="128"
+                                 height="128">
+                            <h1 class="display-3 fw-bold">WebDesignEdu</h1>
+                            <h3 class="fw-normal text-muted mb-3">Здесь вы можете пройти обучение на начинающего web-дизайнера</h3>
+                            <div class="d-flex gap-3 justify-content-center lead fw-normal">
+                                <a class="icon-link" href="{% url 'education_content:material_list' %}">
+                                    Начать обучение
+                                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                         class="bi">
+                                        <use xlink:href="#chevron-right"/>
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="product-device shadow-sm d-none d-md-flex justify-content-center align-items-center">
+                            <img class="shadow-sm d-none d-md-block" src="/media/asserts/main_page_c.jpg" alt=""
+                                 style="width: 93%; height: 80%; object-fit: cover; border-radius: 7px 7px 7px 7px;">
+                        </div>
+                        <div class="product-device product-device-2 shadow-sm d-none d-md-flex justify-content-center align-items-center">
+                            <img class="shadow-sm d-none d-md-block" src="/media/asserts/main_page_p.jpg" alt=""
+                                 style="width: 93%; height: 80%; object-fit: cover; border-radius: 7px 7px 7px 7px;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid">
+            <div class="row">
+                {% for object in object_list %}
+                    {% include 'education_content/includes/inc_chapter_card.html' %}
+                {% endfor %}
+            </div>
+        </div>
+
+
+    </main>
+{% endblock %}
